@@ -28,6 +28,7 @@ return [
     |
     */
 
+    'adsImageDir' => 'images/bikes/',
     'disks' => [
 
         'local' => [

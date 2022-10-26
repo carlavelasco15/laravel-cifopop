@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ContactoController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +17,7 @@ use App\Http\Controllers\ContactoController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::resource('ads', AdController::class);
 Route::delete('/ads/purgue', [AdController::class, 'purgue'])
     ->name('ads.purgue');
 
@@ -32,15 +30,17 @@ Route::get('/', [WelcomeController::class, 'index'])
 Route::get('/ads/search', [AdController::class, 'search'])
     ->name('ads.search');
 
-Route::resource('ads', AdController::class);
 
 Route::get('ads/{bike}/delete', [AdController::class, 'delete'])
         ->name('ads.delete');
 
+Route::get('/contacto', [ContactoController::class, 'index'])
+    ->name('contacto');
+
 Route::post('/contacto', [ContactoController::class, 'send'])
-->name('contacto.email');
+    ->name('contacto.email');
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -108,8 +108,8 @@
                         title="Imagen de {{ $ad->marca }} {{ $ad->modelo }}"
                         src="{{
                             $ad->imagen ?
-                            asset('storage/' . config('filesystems.bikesImageDir')) . '/' . $ad->imagen :
-                            asset('storage/' . config('filesystems.bikesImageDir')) . '/default.jpg'
+                            asset('storage/' . config('filesystems.adsImageDir')) . '/' . $ad->imagen :
+                            asset('storage/' . config('filesystems.adsImageDir')) . '/default.jpg'
                         }}">
             </div>
         </div>

@@ -10,8 +10,8 @@
         <figure>
             <figcaption>Imagen actual</figcaption>
             <img src="{{ $ad->imagen ?
-                        asset('storage/' . config('filesystems.bikesImageDir')) . '/'.$ad->imagen:
-                        asset('storage/' . config('filesystems.bikesImageDir')) . '/default.jpg' }}"
+                        asset('storage/' . config('filesystems.adsImageDir')) . '/'.$ad->imagen:
+                        asset('storage/' . config('filesystems.adsImageDir')) . '/default.jpg' }}"
                 title="Imagen de {{ $ad->marca }} {{ $ad->modelo }}"
                 alt="Imagen de {{ $ad->marca }} {{ $ad->modelo }}"
                 class="rounded" style="max-width: 400px">

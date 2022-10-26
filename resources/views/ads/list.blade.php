@@ -3,27 +3,14 @@
 @section('contenido')
     <h2>Listado de motos</h2>
 
-{{--
-    <form method="GET" action="{{route('ads.search')}}" class="col-4 d-flex flex-row">
-        {{csrf_field()}}
-        <input name="marca" type="text" class="col form-control m-2"
-                placeholder="Marca" maxlength="16" required
-                value="{{empty($marca) ? '' : $marca}}">
-
-        <input name="modelo" type="text" class="col form-control m-2"
-                placeholder="Modelo" maxlength="16" required
-                value="{{empty($modelo) ? '' : $modelo}}">
-        <button type="submit" class="col btn btn-primary m-2">Buscar</button>
-    </form> --}}
-
     <form action="{{route('ads.search')}}" class="col-6 row mb-2" method="GET">
-        <input type="text" class="col form-control ms-2 mb-2" name="marca"
-            placeholder="Marca" maxlength="16"
-            value="{{ $marca ?? '' }}">
+        <input type="text" class="col form-control ms-2 mb-2" name="descripcion"
+            placeholder="descripcion" maxlength="16"
+            value="{{ $descripcion ?? '' }}">
 
-        <input type="text" class="col form-control ms-2 mb-2 ms-3" name="modelo"
-            placeholder="Modelo" maxlength="16"
-            value="{{ $modelo ?? '' }}">
+        <input type="text" class="col form-control ms-2 mb-2 ms-3" name="titulo"
+            placeholder="titulo" maxlength="16"
+            value="{{ $titulo ?? '' }}">
 
         <button type="submit" class="col btn btn-primary ms-2 mb-2 ms-3">Buscar</button>
 
@@ -45,10 +32,9 @@
         <tr>
             <th>ID</th>
             <th>Imagen</th>
-            <th>Marca</th>
+            <th>descripcion</th>
             <th>Modelo</th>
-            <th>Matrícula</th>
-            <th>Color</th>
+            <th>Precio</th>
             <th>Operaciones</th>
         </tr>
 
@@ -57,18 +43,17 @@
                 <td>{{ $ad->id }}</td>
                 <td class="text-center" style="max-width: 80px">
                     <img class="rounded" style="max-width: 80%"
-                        alt="Imagen de {{$ad->marca}} {{$ad->modelo}}"
-                        title="Imagen de {{$ad->marca}} {{$ad->modelo}}"
+                        alt="Imagen de {{$ad->descripcion}} {{$ad->titulo}}"
+                        title="Imagen de {{$ad->descripcion}} {{$ad->titulo}}"
                         src="{{
                                 $ad->imagen?
-                                asset('storage/'.config('filesystems.bikesImageDir')).'/'.$ad->imagen:
-                                asset('storage/'.config('filesystems.bikesImageDir')).'/default.jpg'
+                                asset('storage/'.config('filesystems.adsImageDir')).'/'.$ad->imagen:
+                                asset('storage/'.config('filesystems.adsImageDir')).'/default.jpg'
                             }}">
                 </td>
-                <td>{{ $ad->marca }}</td>
-                <td>{{ $ad->modelo }}</td>
-                <td>{{ $ad->matricula }}</td>
-                <td style="background-color: {{ $ad->color }}">{{ $ad->color }}</td>
+                <td>{{ $ad->descripcion }}</td>
+                <td>{{ $ad->titulo }}</td>
+                <td>{{ $ad->precio }}</td>
                 <td class="text-center">
                     <a href="{{route('ads.show', $ad->id)}}">
                         <img    src="{{asset('images/buttons/show.png')}}"

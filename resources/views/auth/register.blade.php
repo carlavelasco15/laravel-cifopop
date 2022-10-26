@@ -61,6 +61,14 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="poblacion" class="col-md-4 col-form-label text-md-end">Loca</label>
+
+                            <div class="col-md-6">
+                                <input id="poblacion" type="text" class="form-control" name="poblacion" autocomplete="poblacion">
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

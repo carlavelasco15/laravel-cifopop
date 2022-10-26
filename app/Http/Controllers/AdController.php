@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
-    public function __construct() {
+    /* public function __construct() {
         $this->middleware('verified')->except('index', 'show', 'search');
         $this->middleware('password.confirm')->only('destroy');
-    }
+    } */
 
     /**
      * Display a listing of the resource.
@@ -47,19 +47,19 @@ class AdController extends Controller
      */
     public function store(AdRequest $request)
     {
-        $datos = $request->only(['marca', 'modelo', 'precio', 'kms', 'matriculada', 'matricula', 'color']);
+        $datos = $request->only(['titulo', 'precio', 'descripcion']);
         $datos += ['imagen' => NULL];
         if($request->hasFile('imagen')) {
             $ruta = $request->file('imagen')->store(config('filesystems.adsImageDir'));
             $datos['imagen'] = pathinfo($ruta, PATHINFO_BASENAME);
         }
-        $datos['user_id'] = $request->user()->id;
+        $datos['user_id'] = $request->user()->id ?? 1;
         $ad = Ad::create($datos);
-        if($request->user()->ads->count() == 1)
+        if($request->user() && $request->user()->ads->count() == 1)
             FirstAdCreated::dispatch($ad, $request->user());
         return redirect()
                 ->route('ads.show', $ad->id)
-                ->with('success', "Moto $ad->marca $ad->modelo añadida satisfactoriamente")
+                ->with('success', "Anuncio $ad->titulo añadido satisfactoriamente")
                 ->cookie('lastInsertID', $ad->id, 0);
     }
 
@@ -84,8 +84,8 @@ class AdController extends Controller
      */
     public function edit(Request $request, Ad $ad)
     {
-        if($request->user()->cant('update', $ad))
-                abort(401, 'No puedes borrar una moto que no es tuya');
+        /* if($request->user()->cant('update', $ad))
+                abort(401, 'No puedes borrar una moto que no es tuya'); */
         return view('ads.update', [
             'ad' => $ad,
         ]);
@@ -98,10 +98,10 @@ class AdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AdUpdateRequest $request, Ad $ad)
+    public function update(AdRequest $request, Ad $ad)
     {
-        if($request->user()->cant('update', $ad))
-                abort(401, 'No puedes borrar una moto que no es tuya');
+        /* if($request->user()->cant('update', $ad))
+                abort(401, 'No puedes borrar una moto que no es tuya'); */
         $datos = $request->only('marca', 'modelo', 'kms', 'precio');
         $datos['matriculada'] = $request->has('matriculada') ? 1 : 0;
         $datos['matricula'] = $request->has('matriculada') ? $request->input('matricula') : NULL;
@@ -144,8 +144,8 @@ class AdController extends Controller
      */
     public function destroy(Request $request, Ad $ad)
     {
-        if($request->user()->cant('delete', $ad))
-            abort(401, 'No puedes borrar una moto que no es tuya');
+        /* if($request->user()->cant('delete', $ad))
+            abort(401, 'No puedes borrar una moto que no es tuya'); */
         $ad->delete();
         return redirect('ads')
             ->with('success', "Moto $ad->marca $ad->modelo eliminada.");

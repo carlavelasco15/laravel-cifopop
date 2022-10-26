@@ -1,7 +1,7 @@
-@extends('welcome')
+@extends('layouts.master')
 
 @section('contenido')
-    <h2>Detalles de la moto {{"$ad->marca $ad->modelo"}}</h2>
+    <h2>Detalles de la moto {{"$ad->titulo"}}</h2>
 
     <table class="table table-striped table-bordered">
         <tr>
@@ -9,51 +9,31 @@
             <td>{{$ad->id}}</td>
         </tr>
         <tr>
-            <td>Marca</td>
-            <td>{{$ad->marca}}</td>
+            <td>titulo</td>
+            <td>{{$ad->titulo}}</td>
         </tr>
         <tr>
-            <td>Modelo</td>
-            <td>{{$ad->modelo}}</td>
+            <td>descripcion</td>
+            <td>{{$ad->descripcion}}</td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td>Propietario</td>
             <td>{{$ad->user ? $ad->user->name : 'Sin propietario'}}</td>
-        </tr>
+        </tr> --}}
         <tr>
             <td>Precio</td>
             <td>{{$ad->precio}}</td>
         </tr>
         <tr>
-            <td>Kms</td>
-            <td>{{$ad->kms}}</td>
-        </tr>
-        <tr>
-            <td>Matriculada</td>
-            <td>{{$ad->matriculada ? 'SI' : 'NO'}}</td>
-        </tr>
-        @if($ad->matriculada)
-        <tr>
-            <td>Matrícula</td>
-            <td>{{$ad->matricula}}</td>
-        </tr>
-        @endif
-        @if($ad->color)
-        <tr>
-            <td>Color</td>
-            <td style="background-color: {{ $ad->color }}">{{ $ad->color }}</td>
-        </tr>
-        @endif
-        <tr>
             <td>Imagen</td>
             <td class="text-start">
                 <img class="rounded" style="max-width: 400px"
-                    alt="Imagen de {{ $ad->marca }} {{ $ad->modelo }}"
-                    title="Imagen de {{ $ad->marca }} {{ $ad->modelo }}"
+                    alt="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
+                    title="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
                     src="{{
                             $ad->imagen?
-                            asset('storage/'.config('filesystems.bikesImageDir')).'/'.$ad->imagen:
-                            asset('storage/'.config('filesystems.bikesimageDir')).'/default.jpg'
+                            asset('storage/'.config('filesystems.adsImageDir')).'/'.$ad->imagen:
+                            asset('storage/'.config('filesystems.adsImageDir')).'/default.jpg'
                         }}">
             </td>
         </tr>
@@ -84,4 +64,13 @@
         <a href="{{url('/')}}" class="btn btn-primary m-2">Inicio</a>
         <a href="{{route('ads.index')}}" class="btn btn-primary m-2">Garaje</a>
     </div>
+
+    <img class="rounded" style="max-width: 400px"
+                    alt="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
+                    title="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
+                    src="{{
+                            $ad->imagen?
+                            asset('storage/'.config('filesystems.adsImageDir')).'/'.$ad->imagen:
+                            asset('storage/'.config('filesystems.adsImageDir')).'/default.jpg'
+                        }}">
 @endsection

@@ -14,8 +14,6 @@ class ContactoController extends Controller
     }
 
     public function send(Request $request) {
-
-        /* dd($request); */
         $mensaje = new \stdClass();
         $mensaje->asunto = $request->asunto;
         $mensaje->email = $request->email;
@@ -26,7 +24,7 @@ class ContactoController extends Controller
             $request->file('fichero')->getRealPath() :
             NULL;
 
-        Mail::to('contacto@larabikes.com')->send(new Contact($mensaje));
+        Mail::to('contacto@laraads.com')->send(new Contact($mensaje));
 
         return redirect()
             ->route('portada')

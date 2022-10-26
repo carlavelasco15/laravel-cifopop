@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\FirstAdCreated;
+use App\Http\Requests\AdDeleteRequest;
 use Illuminate\Http\Request;
 use App\Models\Ad;
 use App\Http\Requests\AdRequest;
@@ -13,7 +14,7 @@ class AdController extends Controller
 {
     public function __construct() {
         $this->middleware('verified')->except('index', 'show', 'search');
-       /*  $this->middleware('password.confirm')->only('destroy'); */
+        $this->middleware('password.confirm')->only('purgue');
     }
 
     /**
@@ -82,10 +83,10 @@ class AdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Ad $ad)
+    public function edit(AdRequest $request, Ad $ad)
     {
-        /* if($request->user()->cant('update', $ad))
-                abort(401, 'No puedes borrar una moto que no es tuya'); */
+        if($this->user()->cant('update',dd($this->ad)))
+            abort(401, 'No puedes actualizar un anuncio que no es tuyo.');
         return view('ads.update', [
             'ad' => $ad,
         ]);
@@ -100,8 +101,8 @@ class AdController extends Controller
      */
     public function update(AdRequest $request, Ad $ad)
     {
-        /* if($request->user()->cant('update', $ad))
-                abort(401, 'No puedes borrar una moto que no es tuya'); */
+        if($this->user()->cant('update', $this->ad))
+            abort(401, 'No puedes actualizar un anuncio que no es tuyo.');
         $datos = $request->only('marca', 'modelo', 'kms', 'precio');
         $datos['matriculada'] = $request->has('matriculada') ? 1 : 0;
         $datos['matricula'] = $request->has('matriculada') ? $request->input('matricula') : NULL;
@@ -125,12 +126,10 @@ class AdController extends Controller
                 Storage::delete($imagenNueva);
         }
         $ad->update($datos);
-        return back()->with('success', "Moto $ad->marca $ad->modelo actualizada");
+        return back()->with('success', "Anuncio $ad->titulo actualizado.");
     }
 
-    public function delete(Request $request, Ad $ad) {
-        if($request->user()->cant('delete', $ad))
-            abort(401, 'No puedes borrar una moto que no es tuya');
+    public function delete(AdDeleteRequest $request, Ad $ad) {
             return view('ads.delete', [
                 'ad' => $ad
             ]);
@@ -142,26 +141,22 @@ class AdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Ad $ad)
+    public function destroy(AdDeleteRequest $request, Ad $ad)
     {
-        /* if($request->user()->cant('delete', $ad))
-            abort(401, 'No puedes borrar una moto que no es tuya'); */
         $ad->delete();
         return redirect('ads')
-            ->with('success', "Moto $ad->marca $ad->modelo eliminada.");
+            ->with('success', "Anuncio $ad->titulo eliminado.");
     }
 
-    public function purgue(Request $request)
+    public function purgue(AdDeleteRequest $request)
     {
-        $ad = Ad::withTrashed()->find($request->input('bike_id'));
-        if($request->user()->cant('delete', $ad))
-            abort(401, 'No puedes borrar una moto que no es tuya');
+        $ad = Ad::withTrashed()->find($request->input('ad_id'));
         if($ad->forceDelete() && $ad->imagen)
             Storage::delete(config('filesystems.adsImageDir').'/'.$ad->imagen);
 
         return back()->with(
             'success',
-            "Moto $ad->marca $ad->modelo eliminada definitivamente."
+            "Anuncio $ad->titulo eliminado definitivamente."
         );
     }
 
@@ -182,7 +177,7 @@ class AdController extends Controller
         $ad->restore();
         return back()->with(
             'success',
-            "Moto $ad->marca $ad->modelo restaurada correctamente."
+            "Anuncio $ad->matitulo restaurado correctamente."
         );
     }
 }

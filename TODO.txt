@@ -11,3 +11,7 @@ destroy
 purgue
 search
 restore
+
+
+metodo addRole()
+autorizacion esta pochillo

@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::resource('ads', AdController::class);
 Route::delete('/ads/purgue', [AdController::class, 'purgue'])
     ->name('ads.purgue');
 
 Route::get('/ads/{bike}/restore', [AdController::class, 'restore'])
     ->name('ads.restore');
+
+Route::resource('ads', AdController::class);
 
 Route::get('/', [WelcomeController::class, 'index'])
 ->name('portada');

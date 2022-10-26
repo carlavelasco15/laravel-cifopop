@@ -21,8 +21,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $ads = $request->user()->ads()->paginate(10);
+        $deletedAds = $request->user()->ads()->onlyTrashed()->get();
+
+        return view('home', [
+            'ads' => $ads,
+            'deletedAds' => $deletedAds
+        ]);
     }
 }

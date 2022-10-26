@@ -1,0 +1,13 @@
+ADCONTROLLER
+
+index
+-create
+-store
+-show
+edit
+update
+delete
+destroy
+purgue
+search
+restore

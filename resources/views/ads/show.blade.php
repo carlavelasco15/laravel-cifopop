@@ -16,10 +16,14 @@
             <td>descripcion</td>
             <td>{{$ad->descripcion}}</td>
         </tr>
-        {{-- <tr>
+        <tr>
             <td>Propietario</td>
             <td>{{$ad->user ? $ad->user->name : 'Sin propietario'}}</td>
-        </tr> --}}
+        </tr>
+        <tr>
+            <td>Población</td>
+            <td>{{$ad->user ? $ad->user->poblacion : 'Sin propietario'}}</td>
+        </tr>
         <tr>
             <td>Precio</td>
             <td>{{$ad->precio}}</td>
@@ -64,13 +68,4 @@
         <a href="{{url('/')}}" class="btn btn-primary m-2">Inicio</a>
         <a href="{{route('ads.index')}}" class="btn btn-primary m-2">Garaje</a>
     </div>
-
-    <img class="rounded" style="max-width: 400px"
-                    alt="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
-                    title="Imagen de {{ $ad->titulo }} {{ $ad->descripcion }}"
-                    src="{{
-                            $ad->imagen?
-                            asset('storage/'.config('filesystems.adsImageDir')).'/'.$ad->imagen:
-                            asset('storage/'.config('filesystems.adsImageDir')).'/default.jpg'
-                        }}">
 @endsection

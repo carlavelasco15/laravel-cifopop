@@ -1,0 +1,12 @@
+{
+    "E-Mail Address": "E-Mail",
+    "Login" : "Identificación",
+    "Password" : "Contraseña",
+    "Remember Me" : "Recuérdame",
+    "Forgot Your Password?" : "¿Olvidaste la contraseña?",
+    "Register" : "Registro",
+    "Name" : "Nombre",
+    "Confirm Password" : "Repetir contraseña",
+    "Dashboard" : "Mi perfil",
+    "You are logged in!" : "Identificado correctamente"
+}

@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
 {
-    /* public function __construct() {
+    public function __construct() {
         $this->middleware('verified')->except('index', 'show', 'search');
-        $this->middleware('password.confirm')->only('destroy');
-    } */
+       /*  $this->middleware('password.confirm')->only('destroy'); */
+    }
 
     /**
      * Display a listing of the resource.
@@ -53,7 +53,7 @@ class AdController extends Controller
             $ruta = $request->file('imagen')->store(config('filesystems.adsImageDir'));
             $datos['imagen'] = pathinfo($ruta, PATHINFO_BASENAME);
         }
-        $datos['user_id'] = $request->user()->id ?? 1;
+        $datos['user_id'] = $request->user()->id;
         $ad = Ad::create($datos);
         if($request->user() && $request->user()->ads->count() == 1)
             FirstAdCreated::dispatch($ad, $request->user());

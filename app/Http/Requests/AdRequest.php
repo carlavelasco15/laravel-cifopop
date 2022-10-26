@@ -24,10 +24,10 @@ class AdRequest extends FormRequest
     public function rules()
     {
         return [
-            'titulo' => 'required|max:255',
-            'precio' => 'required|numeric',
+            'titulo' => 'required|max:255|min:3',
+            'precio' => 'required|numeric|min:0',
             'imagen' => 'sometimes|file|image|mimes:jpg,png,gif,webp|max:2048',
-            'descripcion' => 'required',
+            'descripcion' => 'required|min:3',
         ];
     }
 }

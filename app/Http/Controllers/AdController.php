@@ -85,7 +85,7 @@ class AdController extends Controller
      */
     public function edit(AdRequest $request, Ad $ad)
     {
-        if($this->user()->cant('update',dd($this->ad)))
+        if($this->user()->cant('update',$this->ad))
             abort(401, 'No puedes actualizar un anuncio que no es tuyo.');
         return view('ads.update', [
             'ad' => $ad,
@@ -130,9 +130,9 @@ class AdController extends Controller
     }
 
     public function delete(AdDeleteRequest $request, Ad $ad) {
-            return view('ads.delete', [
-                'ad' => $ad
-            ]);
+        return view('ads.delete', [
+            'ad' => $ad
+        ]);
     }
 
     /**
@@ -143,14 +143,17 @@ class AdController extends Controller
      */
     public function destroy(AdDeleteRequest $request, Ad $ad)
     {
+
         $ad->delete();
         return redirect('ads')
             ->with('success', "Anuncio $ad->titulo eliminado.");
     }
 
-    public function purgue(AdDeleteRequest $request)
+    public function purgue(Request $request)
     {
         $ad = Ad::withTrashed()->find($request->input('ad_id'));
+        if($request->user()->cant('delete', $ad))
+            abort(401, 'No puedes borrar un anuncio que no es tuyo.');
         if($ad->forceDelete() && $ad->imagen)
             Storage::delete(config('filesystems.adsImageDir').'/'.$ad->imagen);
 
@@ -171,9 +174,11 @@ class AdController extends Controller
         return view('ads.list', ['ads' => $ads, 'marca' => $marca, 'modelo' => $modelo]);
     }
 
-    public function restore(int $id)
+    public function restore(Request $request, int $id)
     {
         $ad = Ad::withTrashed()->find($id);
+        if($request->user()->cant('delete', $ad))
+            abort(401, 'No puedes borrar un anuncio que no es tuyo.');
         $ad->restore();
         return back()->with(
             'success',

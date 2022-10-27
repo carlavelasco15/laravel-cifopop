@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\OfferController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 Route::delete('/ads/purgue', [AdController::class, 'purgue'])
     ->name('ads.purgue');
 
-Route::get('/ads/{bike}/restore', [AdController::class, 'restore'])
+Route::get('/ads/{ad}/restore', [AdController::class, 'restore'])
     ->name('ads.restore');
 
 Route::resource('ads', AdController::class);
@@ -31,8 +32,11 @@ Route::get('/ads/search', [AdController::class, 'search'])
     ->name('ads.search');
 
 
-Route::get('ads/{bike}/delete', [AdController::class, 'delete'])
-        ->name('ads.delete');
+Route::get('ads/{ad}/delete', [AdController::class, 'delete'])
+       ->name('ads.delete');
+
+Route::get('offers/store', [OfferController::class, 'store'])
+        ->name('offers.store');
 
 Route::get('/contacto', [ContactoController::class, 'index'])
     ->name('contacto');

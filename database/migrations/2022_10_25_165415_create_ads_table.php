@@ -17,7 +17,7 @@ class CreateAdsTable extends Migration
             $table->id();
             $table->string('titulo', 255);
             $table->float('precio')->default(0);
-            $table->string('imagen', 255)->nullable();
+            $table->string('text', 255)->nullable();
             $table->longText('descripcion')->nullable();
             $table->timestamps();
         });

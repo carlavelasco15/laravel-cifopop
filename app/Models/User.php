@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Models\Ad');
     }
 
-    public function hasRoles($roleNames):bool {
+    public function hasRole($roleNames):bool {
         if(!is_array($roleNames))
             $roleNames = [$roleNames];
         foreach($this->roles as $role) {

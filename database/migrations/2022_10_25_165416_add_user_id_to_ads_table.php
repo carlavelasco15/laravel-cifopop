@@ -14,7 +14,7 @@ class AddUserIdToAdsTable extends Migration
     public function up()
     {
         Schema::table('ads', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->refernces('id')->nullable()->after('imagen');
+            $table->unsignedBigInteger('user_id')->references('id')->nullable()->after('imagen');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Ad;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,7 +15,6 @@ class AdDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        dd($this);
         return $this->user()->can('delete', $this->ad);
     }
 

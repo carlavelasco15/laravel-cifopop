@@ -35,8 +35,11 @@ Route::get('/ads/search', [AdController::class, 'search'])
 Route::get('ads/{ad}/delete', [AdController::class, 'delete'])
        ->name('ads.delete');
 
-Route::get('offers/store', [OfferController::class, 'store'])
+Route::post('offers/store', [OfferController::class, 'store'])
         ->name('offers.store');
+
+Route::post('offers/refuse', [OfferController::class, 'refuse'])
+        ->name('offers.refuse');
 
 Route::get('/contacto', [ContactoController::class, 'index'])
     ->name('contacto');

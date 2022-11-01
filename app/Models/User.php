@@ -43,7 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function ads() {
-        return $this->hasMany('App\Models\Ad');
+        return $this->hasMany(Ad::class);
     }
 
     public function hasRole($roleNames):bool {
@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function roles() {
-        return $this->belongsToMany('App\Models\Role');
+        return $this->belongsToMany(Role::class);
     }
 
     public function remainingRoles() {

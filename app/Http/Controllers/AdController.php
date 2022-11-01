@@ -64,8 +64,8 @@ class AdController extends Controller
                 ->cookie('lastInsertID', $ad->id, 0);
     }
 
-    /**
-     * Display the specified resource.
+                                                                            
+     /** Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -73,7 +73,8 @@ class AdController extends Controller
     public function show(Ad $ad)
     {
         return view('ads.show', [
-            'ad'=>$ad
+            'ad'=>$ad,
+            'offers' => $ad->offers()->paginate(config('pagination.offers', 10)),
         ]);
     }
 
@@ -182,7 +183,7 @@ class AdController extends Controller
         $ad->restore();
         return back()->with(
             'success',
-            "Anuncio $ad->matitulo restaurado correctamente."
+            "Anuncio $ad->titulo restaurado correctamente."
         );
     }
 }

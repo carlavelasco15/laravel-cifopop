@@ -47,38 +47,39 @@
         <h2>Ofertas</h2>
 
         <form method="POST" action="{{ route('offers.store') }}">
+            {{csrf_field()}}
             <div class="my-3 d-flex align-items-end">
-                <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="ad_id" value="{{ $ad->id }}">
                 <div class="w-75">
                     <label>Mensaje</label>
-                    <input class="up form-control" name= type="text" value="{{old('mensaje')}}">
+                    <input class="up form-control" name="mensaje" type="text" value="{{old('mensaje')}}">
                 </div>
                 <div class="ms-3">
                     <label>Oferta</label>
-                    <input class="up form-control" name="descripcion" type="number" value="{{old('descripcion')}}">
+                    <input class="up form-control" name="precio" type="number" value="{{old('precio')}}">
                 </div>
                 <input class="btn btn-success ms-3" name="" type="submit" value="Ofertar">
             </div>
         </form>
     <table class="table table-striped table-bordered">
         <tr>
-            <th>Fecha</th>
-            <th>Nombre ofertante</th>
-            <th>Oferta</th>
-            <th>Mensaje</th>
-            <th>Acciones</th>
+            <th class="text-center">Nombre ofertante</th>
+            <th class="text-center">Oferta</th>
+            <th class="text-center">Mensaje</th>
+            <th class="text-center">Caducidad</th>
+            <th class="text-center">Acciones</th>
         </tr>
+        @forelse($offers as $offer)
         <tr>
-            <td>27/10/2022</td>
-            <td>Dani</td>
-            <td>5</td>
-            <td>Esto es una mierda.</td>
+            <td>{{ $offer->user ? $offer->user->name : 'Sin propietario' }}</td>
+            <td class="text-center">{{ $offer->precio }} €</td>
+            <td>{{ $offer->mensaje }}</td>
+            <td class="text-center">{{ $offer->vigencia }}</td>
             <td class="text-center d-flex justify-content-around">
                 <a href="{{ route('ads.restore', $ad->id) }}">
                     <button class="btn btn-success">Aceptar</button>
                 </a>
-                <form method="POST" action="{{ route('ads.purgue') }}">
+                <form method="POST" action="{{ route('offers.refuse') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="ad_id" value="{{ $ad->id }}">
                     <input type="submit" alt="Borrar" title="Rechazar"
@@ -86,7 +87,15 @@
                 </form>
             </td>
         </tr>
+            @if($loop->last)
+                <tr>
+                    <td colspan="7">Mostrando {{sizeof($offers)}} de {{$total}}.</td>
+                </tr>
+            @endif
+        @empty
+        @endforelse
     </table>
+    <div class="col-6 text-start">{{ $offers->links() }}</div>
 
     </div>
     <div class="text-end my-3">
@@ -110,6 +119,7 @@
             @endauth
         </div>
     </div>
+
 
     <div class="btn-group" role="group" aria-label="Links">
         <a href="{{url('/')}}" class="btn btn-primary m-2">Inicio</a>

@@ -14,6 +14,10 @@ class Ad extends Model
 
     public function user()
     {
-        return $this->belongsTo('\App\Models\User');
+        return $this->belongsTo(User::class);
+    }
+
+    public function offers() {
+        return $this->hasMany(Offer::class);
     }
 }

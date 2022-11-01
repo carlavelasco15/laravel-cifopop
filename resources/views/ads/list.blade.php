@@ -90,6 +90,8 @@
         </tr>
         @endforelse
     </table>
+
+    
     <div class="btn-group" role="group" label="Links">
         <a href="{{url('/')}}" class="btn btn-primary ms-2">Inicio</a>
     </div>

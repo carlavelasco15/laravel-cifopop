@@ -26,5 +26,5 @@
 @section('enlaces')
     @parent
         <div href="{{route('ads.index')}}" class="btn btn-primary m-2">Garaje</div>
-        <div href="{{route('ads.show', $ad->id)}}" class="btn btn-primary m-2">Regresar a detalles de la moto</div>
+        <div href="{{route('ads.show', $ad->id)}}" class="btn btn-primary m-2">Regresar a detalles del anuncio</div>
 @endsection

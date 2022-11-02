@@ -25,10 +25,12 @@ class HomeController extends Controller
     {
         $ads = $request->user()->ads()->paginate(10);
         $deletedAds = $request->user()->ads()->onlyTrashed()->get();
+        $myOffers = $request->user()->offers()->paginate(10);
 
         return view('home', [
             'ads' => $ads,
-            'deletedAds' => $deletedAds
+            'deletedAds' => $deletedAds,
+            'myOffers' => $myOffers,
         ]);
     }
 }

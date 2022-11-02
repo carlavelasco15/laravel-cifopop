@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('titulo', 'Nueva Moto')
+@section('titulo', 'Nuevo anuncio');
 
 @section('contenido')
 

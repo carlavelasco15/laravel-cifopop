@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Ad;
 use App\Http\Requests\AdRequest;
 use App\Http\Requests\AdUpdateRequest;
+use App\Mail\OfferAccepted;
+use App\Mail\OfferRejected;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AdController extends Controller
@@ -53,7 +56,7 @@ class AdController extends Controller
         if($request->hasFile('imagen')) {
             $ruta = $request->file('imagen')->store(config('filesystems.adsImageDir'));
             $datos['imagen'] = pathinfo($ruta, PATHINFO_BASENAME);
-        }
+    }
         $datos['user_id'] = $request->user()->id;
         $ad = Ad::create($datos);
         if($request->user() && $request->user()->ads->count() == 1)
@@ -64,7 +67,7 @@ class AdController extends Controller
                 ->cookie('lastInsertID', $ad->id, 0);
     }
 
-                                                                            
+
      /** Display the specified resource.
      *
      * @param  int  $id
@@ -72,9 +75,10 @@ class AdController extends Controller
      */
     public function show(Ad $ad)
     {
+        $offers = $ad->openOffers();
         return view('ads.show', [
             'ad'=>$ad,
-            'offers' => $ad->offers()->paginate(config('pagination.offers', 10)),
+            'offers' => $offers
         ]);
     }
 
@@ -145,6 +149,19 @@ class AdController extends Controller
     public function destroy(AdDeleteRequest $request, Ad $ad)
     {
 
+        $offers = Ad::find($request->ad_id)->openOffers()->get();
+        //enviar emails
+        foreach ($offers as $offer) {
+            if ($offer->user_id == $request->user_id) {
+                Mail::to($offer->user()->get()[0]->email)->send(new OfferAccepted(Ad::find($request->ad_id)));
+                $offer['accepted_at'] = date('Y-m-d');
+            } else {
+                Mail::to($offer->user()->get()[0]->email)->send(new OfferRejected(Ad::find($request->ad_id)));
+                $offer['rejected_at'] = date('Y-m-d');
+            }
+            $offer->save();
+        }
+
         $ad->delete();
         return redirect('ads')
             ->with('success', "Anuncio $ad->titulo eliminado.");
@@ -165,14 +182,14 @@ class AdController extends Controller
     }
 
     public function search(Request $request){
-        $request->validate(['marca' => 'max:16', 'modelo' => 'max:16']);
-        $marca = $request->input('marca', 'a');
-        $modelo = $request->input('modelo', 'b');
-        $ads = Ad::where('marca', 'like', "%$marca%")
-                        ->where('modelo', 'like', "%$modelo%")
+        $request->validate(['titulo' => 'max:16', 'descripcion' => 'max:16']);
+        $titulo = $request->input('titulo', '');
+        $descripcion = $request->input('descripcion', '');
+        $ads = Ad::where('titulo', 'like', "%$titulo%")
+                        ->where('descripcion', 'like', "%$descripcion%")
                         ->paginate(config('paginator.ads'))
-                        ->appends(['marca' => $marca, 'modelo' => $modelo]);
-        return view('ads.list', ['ads' => $ads, 'marca' => $marca, 'modelo' => $modelo]);
+                        ->appends(['titulo' => $titulo, 'descripcion' => $descripcion]);
+        return view('ads.list', ['ads' => $ads, 'titulo' => $titulo, 'descripcion' => $descripcion]);
     }
 
     public function restore(Request $request, int $id)

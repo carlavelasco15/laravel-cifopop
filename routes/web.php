@@ -23,13 +23,13 @@ Route::delete('/ads/purgue', [AdController::class, 'purgue'])
 Route::get('/ads/{ad}/restore', [AdController::class, 'restore'])
     ->name('ads.restore');
 
+Route::get('/ads/search', [AdController::class, 'search'])
+    ->name('ads.search');
+
 Route::resource('ads', AdController::class);
 
 Route::get('/', [WelcomeController::class, 'index'])
 ->name('portada');
-
-Route::get('/ads/search', [AdController::class, 'search'])
-    ->name('ads.search');
 
 
 Route::get('ads/{ad}/delete', [AdController::class, 'delete'])
@@ -37,6 +37,9 @@ Route::get('ads/{ad}/delete', [AdController::class, 'delete'])
 
 Route::post('offers/store', [OfferController::class, 'store'])
         ->name('offers.store');
+
+Route::post('offers/accept', [OfferController::class, 'accept'])
+        ->name('offers.accept');
 
 Route::post('offers/refuse', [OfferController::class, 'refuse'])
         ->name('offers.refuse');

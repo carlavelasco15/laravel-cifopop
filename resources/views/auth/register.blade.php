@@ -68,6 +68,13 @@
                                 <input id="poblacion" type="text" class="form-control" name="poblacion" autocomplete="poblacion">
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="telefono" class="col-md-4 col-form-label text-md-end">Telefono</label>
+
+                            <div class="col-md-6">
+                                <input id="telefono" type="text" class="form-control" name="telefono" autocomplete="telefono">
+                            </div>
+                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

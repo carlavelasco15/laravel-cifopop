@@ -13,12 +13,13 @@
         </figure>
     </header>
     <main>
-        <h1>Felicidades</h1>
-        <h2>¡Has publicado tu primer anuncio en CIFOPOP!</h2>
-        <p>Sigue así, estás colaborando para que CIFOPOP se convierta en la primera red de productos de segunda mano.</p>
+        <h1>Oferta aceptada</h1>
+        <h2>¡Tu oferta ha sido aceptada por el propietario!</h2>
+        <p>La oferta que habías hecho al anuncio  {{ $ad->titulo }} ha sido aceptada.</p>
+        <p>!Feliciades¡</p>
     </main>
     <footer class="page-footer font-small p-4 bg-light">
-        <p>Aplicación crada por Carla Velasco como ejemplo de clase.</p>
+        <p>Aplicación crada por Carla Velasco como trabajo final de clase.</p>
         <p>Desarrollada haciendo uso de <b>Laravel</b> y <b>Bootstrap</b>.</p>
     </footer>
 </body>

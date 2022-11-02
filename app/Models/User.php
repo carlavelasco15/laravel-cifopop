@@ -20,7 +20,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'poblacion'
+        'poblacion',
+        'telefono'
     ];
 
     /**
@@ -46,6 +47,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Ad::class);
     }
 
+    public function offers() {
+        return $this->hasMany(Offer::class);
+    }
+
     public function hasRole($roleNames):bool {
         if(!is_array($roleNames))
             $roleNames = [$roleNames];
@@ -68,5 +73,14 @@ class User extends Authenticatable implements MustVerifyEmail
         $actualRoles = $this->roles;
         $allRoles = Role::all();
         return $allRoles->diff($actualRoles);
+    }
+
+    public function hasOfferOnAd(Ad $ad):bool {
+        $offers = $ad->openOffers()->get();
+        foreach ($offers as $offer) {
+            if ($offer->user_id == $this->id)
+                return true;
+        }
+        return false;
     }
 }

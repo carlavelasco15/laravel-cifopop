@@ -28,7 +28,7 @@
                 </li>
                 @auth
                     <li class="nav-item ms-2">
-                        <a class="nav-link {{ $pagina == 'home' ? 'active': '' }}" href="{{route('home')}}">Mis anuncios</a>
+                        <a class="nav-link {{ $pagina == 'home' ? 'active': '' }}" href="{{route('home')}}">Mi perfil</a>
                     </li>
                     <li class="nav-item ms-2">
                         <a class="nav-link {{ $pagina == 'ads.create' ? 'active': '' }}" href="{{route('ads.create')}}">Nuevos anuncios</a>

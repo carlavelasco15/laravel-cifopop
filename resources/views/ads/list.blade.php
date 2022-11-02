@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('contenido')
-    <h2>Listado de motos</h2>
+    <h2>Listado de anuncios</h2>
 
     <form action="{{route('ads.search')}}" class="col-6 row mb-2" method="GET">
         <input type="text" class="col form-control ms-2 mb-2" name="descripcion"
@@ -33,7 +33,7 @@
             <th>ID</th>
             <th>Imagen</th>
             <th>descripcion</th>
-            <th>Modelo</th>
+            <th>Titulo</th>
             <th>Precio</th>
             <th>Operaciones</th>
         </tr>
@@ -86,12 +86,12 @@
             @endif
         @empty
         <tr>
-            <td colspan="4">No hay motos para mostrar</td>
+            <td colspan="4">No hay anuncios para mostrar</td>
         </tr>
         @endforelse
     </table>
 
-    
+
     <div class="btn-group" role="group" label="Links">
         <a href="{{url('/')}}" class="btn btn-primary ms-2">Inicio</a>
     </div>

@@ -1,7 +1,7 @@
 @extends('welcome')
 
 @section('contenido')
-    <h2>Actualización de la moto {{"$ad->marca $ad->modelo"}}</h2>
+    <h2>Actualización del anuncio {{"$ad->marca $ad->modelo"}}</h2>
 
     <form action="{{route('ads.update', $ad->id)}}" class="my-2 border p-5" method="POST" enctype="multipart/form-data">
         {{csrf_field()}}

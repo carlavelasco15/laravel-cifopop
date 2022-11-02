@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('contenido')
-    <h2>Detalles de la moto {{"$ad->titulo"}}</h2>
+    <h2>Detalles del anuncio {{"$ad->titulo"}}</h2>
 
     <table class="table table-striped table-bordered">
         <tr>
@@ -77,10 +77,18 @@
             <td class="text-center">{{ $offer->vigencia }}</td>
             <td class="text-center d-flex justify-content-around">
                 <a href="{{ route('ads.restore', $ad->id) }}">
-                    <button class="btn btn-success">Aceptar</button>
                 </a>
+                <form method="POST" action="{{ route('offers.accept') }}">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="offer_id" value="{{ $offer->id }}">
+                    <input type="hidden" name="ad_id" value="{{ $ad->id }}">
+                    <input type="hidden" name="user_id" value="{{ $offer->user_id }}">
+                    <input type="submit" alt="Aceptar" title="Aceptar"
+                        class="btn btn-success" value="Aceptar">
+                </form>
                 <form method="POST" action="{{ route('offers.refuse') }}">
                     {{ csrf_field() }}
+                    <input type="hidden" name="offer_id" value="{{ $offer->id }}">
                     <input type="hidden" name="ad_id" value="{{ $ad->id }}">
                     <input type="submit" alt="Borrar" title="Rechazar"
                         class="btn btn-danger" value="Rechazar">
@@ -93,9 +101,12 @@
                 </tr>
             @endif
         @empty
+            <tr>
+                <td colspan="7">El anuncio no tiene ofertas.</td>
+            </tr>
         @endforelse
     </table>
-    <div class="col-6 text-start">{{ $offers->links() }}</div>
+    {{-- <div class="col-6 text-start">{{ $offers->links() }}</div> --}}
 
     </div>
     <div class="text-end my-3">

@@ -23,10 +23,11 @@ class Ad extends Model
     }
 
     public function openOffers() {
+        $offer = new Offer();
         $query = DB::table('offers')
                     ->where('ad_id', $this->id)
                     ->whereNull('rejected_at')
                     ->whereNull('accepted_at');
-        return $this->hydrate($query->get()->toArray());
+        return $offer->hydrate($query->get()->toArray());
     }
 }

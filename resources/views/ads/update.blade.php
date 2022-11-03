@@ -1,4 +1,4 @@
-@extends('welcome')
+@extends('layouts.master')
 
 @section('contenido')
     <h2>Actualización del anuncio {{"$ad->marca $ad->modelo"}}</h2>
@@ -8,21 +8,15 @@
         <input name="_method" type="hidden" value="PUT">
 
         <div class="form-group row">
-            <label for="inputMarca" class="col-sm-2 col-form-label">Marca</label>
-            <input  type="text" name="marca" class="up form-control col-sm-10"
-                    maxlenght="255" required="required" value="{{$ad->marca}}">
+            <label for="inputTitulo" class="col-sm-2 col-form-label">titulo</label>
+            <input  type="text" name="titulo" class="up form-control col-sm-10"
+                    maxlenght="255" required="required" value="{{$ad->titulo}}">
         </div>
 
         <div class="form-group row">
-            <label for="inputModelo" class="col-sm-2 col-form-label">Modelo prova</label>
-            <input type="text" name="modelo" class="up form-control col-sm-10"
-                    maxlenght="255" required="required" value="{{$ad->modelo}}">
-        </div>
-
-        <div class="form-group row">
-            <label for="inputKms" class="col-sm-2 col-form-label">Kms</label>
-            <input type="number" name="kms" class="up form-control col-sm-10"
-                    maxlenght="255" required="required" value="{{$ad->kms}}">
+            <label for="inputDescripcion" class="col-sm-2 col-form-label">descripcion</label>
+            <input type="text" name="descripcion" class="up form-control col-sm-10"
+                    maxlenght="255" required="required" value="{{$ad->descripcion}}">
         </div>
 
         <div class="form-group row">
@@ -30,56 +24,6 @@
             <input type="number" name="precio" class="up form-control col-sm-10"
                     maxlenght="255" required="required" value="{{$ad->precio}}">
         </div>
-
-        <div class="form-group row my-3">
-            <div class="form-check">
-                <input name="matriculada" value="1" class="form-check-input"
-                        type="checkbox" {{$ad->matriculada ? "checked" : "unchecked"}}>
-                <label class="formcheck-label">Matriculada</label>
-            </div>
-        </div>
-
-        <div class="form-check col-sm-6">
-            <label for="inputMatricula" class="col-sm-2 form-label">Matrícula</label>
-            <input type="text" class="up form-control" name="matricula"
-                    id="inputMatricula" maxlength="7" value="{{ $ad->matricula }}">
-        </div>
-
-        <div class="form-group col-sm-6">
-            <label for="confirmMatricula" class="col-sm-2 form-label">Repetir</label>
-            <input type="text" class="up form-control" name="matricula_confirmation" id="confirmMatricula"
-                maxlength="7" value="{{ $ad->matricula }}">
-        </div>
-
-        <script>
-            inputMatricula.disabled = !chkMatriculada.checked;
-
-            chkMatriculada.onchange = function() {
-                inputMatricula.disabled = !chkMatriculada.checked;
-            }
-        </script>
-
-        <div class="form-group row">
-            <div class="form-check col-sm-6">
-                <input type="checkbox" class="form-check-input"
-                        id="chkColor" {{ $ad->color ? 'checked' : ''}}>
-                <label class="form-check-label">Indicar el color</label>
-            </div>
-            <div class="form-check col-sm-6">
-                <label for="inputColor" class="col-sm-2 form-label">Color</label>
-                <input type="color" class="up form-control form-control-color" name="color"
-                    id="inputColor" value="{{ $ad->color ?? '#FFFFFF' }}">
-            </div>
-        </div>
-
-        <script>
-            inputColor.disabled = !chkColor.checked;
-
-            chkColor.onchange = function() {
-                inputcolor.disabled = !chkColor.checked;
-            }
-
-        </script>
 
         <div class="form-group row my-3">
             <div class="col-sm-9">

@@ -30,6 +30,7 @@
                     <th>Titulo</th>
                     <th>Precio</th>
                     <th>Descripcion</th>
+                    <th>Opciones</th>
                 </tr>
 
                 @forelse($ads as $ad)
@@ -48,7 +49,6 @@
                         <td>{{ $ad->titulo }}</td>
                         <td>{{ $ad->precio }}</td>
                         <td>{{ $ad->descripcion }}</td>
-                        <td style="background-color: {{ $ad->color }}">{{ $ad->color }}</td>
                         <td class="text-center">
                             <a href="{{route('ads.show', $ad->id)}}">
                                 <img    src="{{asset('images/buttons/show.png')}}"
@@ -74,11 +74,6 @@
                             @endauth
                         </td>
                     </tr>
-                    @if($loop->last)
-                    <tr>
-                        <td colspan="7">Mostrando {{sizeof($ads)}} de {{$total}}.</td>
-                    </tr>
-                    @endif
                 @empty
                 <tr>
                     <td colspan="7">No hay anuncios para mostrar</td>
@@ -157,6 +152,35 @@
                     <tr>
                         <td>{{ $offer->ad->titulo }}</td>
                         <td>{{ $offer->precio }}</td>
+                        <td>{{ $offer->mensaje }}</td>
+                        <td>{{ $offer->vigencia }}</td>
+                    </tr>
+                @empty
+                <tr>
+                    <td colspan="7">No tienes ofertas activas</td>
+                </tr>
+                @endforelse
+            </table>
+
+
+
+            <h3 class="mt-5">Historial de ofertas a mis anuncios</h3>
+            <table class="table table-striped table-bordered my-3">
+                <tr>
+                    <th>Anuncio</th>
+                    <th>Precio Ofertado</th>
+                    <th>Precio Original</th>
+                    <th>Estado</th>
+                    <th>Mensaje</th>
+                    <th>Valido hasta</th>
+                </tr>
+
+                @forelse($someonesOffers as $offer)
+                    <tr>
+                        <td>{{ $offer->ad->titulo }}</td>
+                        <td>{{ $offer->precio }}</td>
+                        <td>{{ $offer->ad->precio }}</td>
+                        <td>{{ $offer->rechazada ? 'RECHAZADA' : ($offer->aceptada ? 'ACEPTADA' : 'PENDIENTE RESPUESTA') }}</td>
                         <td>{{ $offer->mensaje }}</td>
                         <td>{{ $offer->vigencia }}</td>
                     </tr>

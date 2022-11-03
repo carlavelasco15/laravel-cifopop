@@ -88,9 +88,9 @@ class AdController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(AdRequest $request, Ad $ad)
+    public function edit(Request $request, Ad $ad)
     {
-        if($this->user()->cant('update',$this->ad))
+        if($request->user()->cant('update', $ad))
             abort(401, 'No puedes actualizar un anuncio que no es tuyo.');
         return view('ads.update', [
             'ad' => $ad,
@@ -106,12 +106,9 @@ class AdController extends Controller
      */
     public function update(AdRequest $request, Ad $ad)
     {
-        if($this->user()->cant('update', $this->ad))
+        if($request->user()->cant('update', $ad))
             abort(401, 'No puedes actualizar un anuncio que no es tuyo.');
-        $datos = $request->only('marca', 'modelo', 'kms', 'precio');
-        $datos['matriculada'] = $request->has('matriculada') ? 1 : 0;
-        $datos['matricula'] = $request->has('matriculada') ? $request->input('matricula') : NULL;
-        $datos['color'] = $request->input('color') ?? NULL;
+        $datos = $request->only('titulo', 'descripcion', 'precio');
         if ($request->hasFile('imagen'))
         {
             if ($ad->imagen)

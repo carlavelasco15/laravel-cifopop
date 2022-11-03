@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OfferDeleteRequest;
 use App\Http\Requests\OfferRequest;
 use App\Mail\OfferRejected;
 use App\Mail\OfferAccepted;
@@ -35,7 +36,7 @@ class OfferController extends Controller
     }
 
     //POLICY si el propietario es el dueño de la oferta o si es admin
-    public function refuse(Request $request) {
+    public function refuse(OfferDeleteRequest $request) {
         //enviar email
         $offer = Offer::find($request->offer_id);
         $user = $offer->user()->get()[0];
@@ -45,24 +46,24 @@ class OfferController extends Controller
         $offer->save();
         //redirect a l'anunci
         $ad = Ad::find($offer['ad_id']);
-        $offers = $ad->openOffers()->get();
+        $offers = $ad->openOffers()->all();
         return redirect()
             ->route('ads.show', $ad->id)
             ->with('offers', $offers);
     }
 
 
-    public function accept(Request $request) {
+    public function accept(OfferDeleteRequest $request) {
         //get de las ofertas 'abiertas'
-        $offers = Ad::find($request->ad_id)->openOffers()->get();
+        $offers = Ad::find($request->ad_id)->openOffers();
         //enviar emails
         foreach ($offers as $offer) {
             if ($offer->user_id == $request->user_id) {
                 Mail::to($offer->user()->get()[0]->email)->send(new OfferAccepted(Ad::find($request->ad_id)));
-                $offer['accepted_at'] = date('Y-m-d');
+                $offer->accepted_at = date('Y-m-d');
             } else {
                 Mail::to($offer->user()->get()[0]->email)->send(new OfferRejected(Ad::find($request->ad_id)));
-                $offer['rejected_at'] = date('Y-m-d');
+                $offer->rejected_at = date('Y-m-d');
             }
             $offer->save();
         }

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -76,11 +77,26 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function hasOfferOnAd(Ad $ad):bool {
-        $offers = $ad->openOffers()->get();
+        $offers = $ad->openOffers()->all();
         foreach ($offers as $offer) {
             if ($offer->user_id == $this->id)
                 return true;
         }
         return false;
+    }
+
+    public function getAllMyProductsOffers() {
+
+        $allOffers = DB::table('offers')
+        ->leftJoin('ads', function ($join) {
+            $join->on('offers.ad_id', '=', 'ads.id');
+        })
+        ->where('ads.user_id', '=', $this->id)
+        ->select('offers.id as id', 'offers.precio as precio', 'offers.mensaje as mensaje', 'offers.accepted_at as aceptada', 'offers.rejected_at as rechazada',
+                 'offers.vigencia as vigencia', 'offers.ad_id as ad_id', 'offers.user_id as user_id')
+        ->get();
+
+        /* 'bookings.id', 'bookings.start_time',  'bookings.end_time', 'bookings.service', 'staffs.name as Staff-Name',  'customers.name as Customer-Name' */
+        return $allOffers;
     }
 }

@@ -23,14 +23,17 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $ads = $request->user()->ads()->paginate(10);
+        $ads = $request->user()->ads()->get();
         $deletedAds = $request->user()->ads()->onlyTrashed()->get();
-        $myOffers = $request->user()->offers()->paginate(10);
+        $myOffers = $request->user()->offers()->get();
+        $someonesOffers = new \App\Models\Offer;
+        $someonesOffers = $someonesOffers->hydrate($request->user()->getAllMyProductsOffers()->toArray());
 
         return view('home', [
             'ads' => $ads,
             'deletedAds' => $deletedAds,
             'myOffers' => $myOffers,
+            'someonesOffers' => $someonesOffers
         ]);
     }
 }

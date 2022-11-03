@@ -43,9 +43,11 @@
         </tr>
     </table>
 
+    @auth
     <div class="my-4">
         <h2>Ofertas</h2>
 
+        @if(!Auth::user()->isOwner($ad))
         <form method="POST" action="{{ route('offers.store') }}">
             {{csrf_field()}}
             <div class="my-3 d-flex align-items-end">
@@ -61,54 +63,53 @@
                 <input class="btn btn-success ms-3" name="" type="submit" value="Ofertar">
             </div>
         </form>
-    <table class="table table-striped table-bordered">
-        <tr>
-            <th class="text-center">Nombre ofertante</th>
-            <th class="text-center">Oferta</th>
-            <th class="text-center">Mensaje</th>
-            <th class="text-center">Caducidad</th>
-            <th class="text-center">Acciones</th>
-        </tr>
-        @forelse($offers as $offer)
-        <tr>
-            <td>{{ $offer->user ? $offer->user->name : 'Sin propietario' }}</td>
-            <td class="text-center">{{ $offer->precio }} €</td>
-            <td>{{ $offer->mensaje }}</td>
-            <td class="text-center">{{ $offer->vigencia }}</td>
-            <td class="text-center d-flex justify-content-around">
-                <a href="{{ route('ads.restore', $ad->id) }}">
-                </a>
-                <form method="POST" action="{{ route('offers.accept') }}">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="offer_id" value="{{ $offer->id }}">
-                    <input type="hidden" name="ad_id" value="{{ $ad->id }}">
-                    <input type="hidden" name="user_id" value="{{ $offer->user_id }}">
-                    <input type="submit" alt="Aceptar" title="Aceptar"
-                        class="btn btn-success" value="Aceptar">
-                </form>
-                <form method="POST" action="{{ route('offers.refuse') }}">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="offer_id" value="{{ $offer->id }}">
-                    <input type="hidden" name="ad_id" value="{{ $ad->id }}">
-                    <input type="submit" alt="Borrar" title="Rechazar"
-                        class="btn btn-danger" value="Rechazar">
-                </form>
-            </td>
-        </tr>
-            @if($loop->last)
-                <tr>
-                    <td colspan="7">Mostrando {{sizeof($offers)}} de {{$total}}.</td>
-                </tr>
-            @endif
-        @empty
-            <tr>
-                <td colspan="7">El anuncio no tiene ofertas.</td>
-            </tr>
-        @endforelse
-    </table>
-    {{-- <div class="col-6 text-start">{{ $offers->links() }}</div> --}}
+        @endif
 
+        @if(Auth::user()->isOwner($ad))
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th class="text-center">Nombre ofertante</th>
+                    <th class="text-center">Oferta</th>
+                    <th class="text-center">Mensaje</th>
+                    <th class="text-center">Caducidad</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+                @forelse($offers as $offer)
+                <tr>
+                    <td>{{ $offer->user ? $offer->user->name : 'Sin propietario' }}</td>
+                    <td class="text-center">{{ $offer->precio }} €</td>
+                    <td>{{ $offer->mensaje }}</td>
+                    <td class="text-center">{{ $offer->vigencia }}</td>
+                    <td class="text-center d-flex justify-content-around">
+                        <a href="{{ route('ads.restore', $ad->id) }}">
+                        </a>
+                        <form method="POST" action="{{ route('offers.accept') }}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="offer_id" value="{{ $offer->id }}">
+                            <input type="hidden" name="ad_id" value="{{ $ad->id }}">
+                            <input type="hidden" name="user_id" value="{{ $offer->user_id }}">
+                            <input type="submit" alt="Aceptar" title="Aceptar"
+                                class="btn btn-success" value="Aceptar">
+                        </form>
+                        <form method="POST" action="{{ route('offers.refuse') }}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="offer_id" value="{{ $offer->id }}">
+                            <input type="hidden" name="ad_id" value="{{ $ad->id }}">
+                            <input type="submit" alt="Borrar" title="Rechazar"
+                                class="btn btn-danger" value="Rechazar">
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                    <tr>
+                        <td colspan="7">El anuncio no tiene ofertas.</td>
+                    </tr>
+                @endforelse
+            </table>
+        @endif
     </div>
+    @endauth
+
     <div class="text-end my-3">
         <div class="btn-group mx-2">
             @auth
